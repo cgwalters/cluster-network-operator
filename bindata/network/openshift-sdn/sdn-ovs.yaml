@@ -141,8 +141,8 @@ spec:
             ovs-vsctl --no-wait --if-exists remove Open_vSwitch . other_config flow-restore-wait=true
             echo "$(date -u "+%Y-%m-%d %H:%M:%S") info: Removed other config ..." 2>&1
 
-            tail -F --pid=$(cat /var/run/openvswitch/ovs-vswitchd.pid) /var/log/openvswitch/ovs-vswitchd.log &
-            tail -F --pid=$(cat /var/run/openvswitch/ovsdb-server.pid) /var/log/openvswitch/ovsdb-server.log &
+            setpriv --pdeathsig SIGTERM -- tail -F --pid=$(cat /var/run/openvswitch/ovs-vswitchd.pid) /var/log/openvswitch/ovs-vswitchd.log &
+            setpriv --pdeathsig SIGTERM -- tail -F --pid=$(cat /var/run/openvswitch/ovsdb-server.pid) /var/log/openvswitch/ovsdb-server.log &
             wait
           fi
         securityContext:
